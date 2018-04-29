@@ -58,26 +58,31 @@ void big_sum(BigInt res, BigInt a, BigInt b){
     unsigned char *pa = a;
     unsigned char *r = res;
     unsigned char c = 0;
-    unsigned char comp = 0xFF;
     int entrou = 2;
-    unsigned char comp3 = 0x00;
-    unsigned char comp2 = 0x01;
 
-   for (i = 0; i< 16; i++){
+    for (i = 0; i< 16; i++){
        
-        c = *pa +*pb - comp;
-        printf("\n%x2 pa\n", *pa);
-        printf("\n%x2 pb\n", *pb);
-        printf("\n%x2 c\n", c);
-        if (c >= comp3) {
-            temp = *pa + *pb - comp;
-             printf("\n%x2 temp \n", temp);
-            *r = temp - comp2;
-             printf("\n%x2 r\n", *r);
-            printf("NAOOOO ENTRAA AQUIII");
-        }else {
-            *r = *pa +*pb;
+        if(entrou == 2){
+            c = *pa + *pb;
+            //printf("\n%x2 c -> \n", c);
+            //printf("\n%x2 *pa -> \n", *pa);
+            //printf("\n%x2 *pb -> \n", *pb);
+        }else{
+            c = (*pa + *pb)+temp;
+            *r = c;
             temp = 0;
+            //printf("\n%x2 c -> \n", c);
+            //printf("\n%x2 *pa -> \n", *pa);
+            //printf("\n%x2 *pb -> \n", *pb);
+            //printf("\n%x2 *r -> \n", *r);
+        }
+
+        if(*pa +*pb > 255){
+            temp = (*pa +*pb) - 255;
+            entrou = 1;
+            *r = 255;
+            //printf("\n%x2 *temp -> \n", temp);
+            //printf("\n%x2 *r -> \n", *r);
         }
         pa++;
         pb++;
