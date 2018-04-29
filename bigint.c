@@ -3,27 +3,33 @@
 #include "bigint.h"
 
 void dump (void *p, int n);
-
+BigInt zeroB;
 int main()
 {
     BigInt a, x;
-    long v = -1;
-    long g = -25;
+    long v = 4;
+    long g = -3;
     long t = 0x00000000000000FF;
-    long y = 0x01;
+    long y = 96;
+		long zero = 0x00;
     //long u ;
     big_val(a, v);
     BigInt b,c, d, h;
     big_val(h, g);
-    //big_val(b, t);
+    big_val(b, t);
     big_val(c, y);
+		big_val(zeroB, zero);
     //dump(c, sizeof(c));
-    printf("\n\n");
+    //printf("\n\n");
     //dump(b, sizeof(b));
     //big_val(d, u);
     //big_sum(d, a, h);
+		//dump(d, sizeof(x));
     //big_val(a, v);
-    big_comp2(x, c);
+    //big_comp2(x, c);
+		//dump(x, sizeof(x));
+		big_sum(d,a, h);
+		dump(d, sizeof(d));
     return 0;
 }
 
@@ -61,61 +67,53 @@ void big_sum(BigInt res, BigInt a, BigInt b){
     unsigned char *r = res;
     unsigned char c = 0;
     int entrou = 2;
-
-    for (i = 0; i< 16; i++){
        
-        if(entrou == 2){
-            c = *pa + *pb;
-            //printf("\n%x2 -> c\n", c);
-            //printf("\n%x2 -> *pa\n", *pa);
-            //printf("\n%x2 -> *pb\n", *pb);
-        }else{
-            c = (*pa + *pb)+temp;
-            *r = c;
-            temp = 0;
-            //printf("\n%x2 -> c\n", c);
-            //printf("\n%x2 -> *pa\n", *pa);
-            //printf("\n%x2 -> *pb\n", *pb);
-            //printf("\n%x2 -> *r\n", *r);
-        }
+    for (i = 0; i< 16; i++){
+      c = (*pa + *pb)+temp;
+      *r = c;
 
-        if(*pa +*pb > 255){
-            temp = (*pa +*pb) - 255;
-            entrou = 1;
-            *r = 255;
-            //printf("\n%x2 -> *temp\n", temp);
-            //printf("\n%x2 -> *r\n", *r);
-        }
-        pa++;
-        pb++;
-        r++;
+      if(c > 255){
+         temp = 1;
+      }
+      else {
+         temp = 0;
+      }
+      pa++;
+      pb++;
+      r++;
     } 
 
-    dump(res, sizeof(res)*2);
+    //dump(res, sizeof(res)*2);
 }
 
 void big_comp2(BigInt res, BigInt a){
 
     unsigned char *r = res;
     unsigned char *v = a;
-    unsigned char *inv;
-    unsigned char msf = 0xFF;
+		unsigned char temp;
+			
     int i = 0;
 
     for(i = 0; i< 16; i++){
-        if(*a == msf){
-            *inv = 0x00;
-        }else{
-            *inv = msf;
-        }
-        inv++;
-        a++;
+				temp = ~(*v);
+				//printf("%02x\n", temp);
+				*r = temp;
+        v++;
+				r++;
     }
-    dump(inv, sizeof(inv)*2);
-    printf("\n\n");
+		//dump(v, sizeof(v)*2);
+    //printf("\n\n");
+		//dump(r, sizeof(r)*2);
+
+		long y = 1;
+		BigInt b;
+		big_val(b, y);
+		big_sum(res, res, b);
+		//printf("\n\n");
+		//dump(r, sizeof(r)*2);
 }
 
-void big_sub (BigInt res, BigInt a, BigInt b){
+void big_sub(BigInt res, BigInt a, BigInt b){
 
     unsigned char temp = 0;
     int i = 0;
@@ -124,6 +122,26 @@ void big_sub (BigInt res, BigInt a, BigInt b){
     unsigned char *r = res;
     unsigned char c = 0;
     int entrou = 2;
+		BigInt tempb;
+		
+		big_comp2(tempb, b);		
+	
+		big_sum(res, a, tempb);	
+}
+
+void big_shl (BigInt res, BigInt a, int n){
+
+		unsigned char temp = 0;
+    int i = 0;
+		res = a;
+    unsigned char *r = res;
+    unsigned char c = 0;
+		
+		
+}
+
+void big_shr (BigInt res, BigInt a, int n){
+
 }
 
 void dump (void *p, int n) {
